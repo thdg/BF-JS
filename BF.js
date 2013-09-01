@@ -6,7 +6,7 @@ Tape.prototype.P = function(val) { return this.tape[this.head] = val; }
 
 // EBNF
 // F = TF | '[',F,']'
-// T = '+','-','<','>','.',','
+// T = '+', '-', '<', '>', '.', ','
 
 var db = function(val) { console.log(val); }
 
@@ -21,15 +21,22 @@ var run = function(program, size) {
             case '-': memory_tape.P(memory_tape.G()-1); break;
             case '<': memory_tape.L(); break;
             case '>': memory_tape.R(); break;
-            case '.': console.log(memory_tape.G()); break;
+            case '.': console.log(String.fromCharCode(memory_tape.G())); break;
             case ',': memory_tape.P(100); break;
         }
     }
 
     var F = function() {
-        if (program_tape.G()=="[") { program_tape.R(); F(); } else
-        if (program_tape.G()!="]") { T(); }
-        program_tape.R();
+        db(program_tape.G());
+        if (program_tape.G()=="[") { 
+            program_tape.R(); 
+            while (program_tape.G()!=']') { F(); } 
+            if (memory_tape.G()!=0) {
+                while (program_tape.G()!='[') {
+                    program_tape.L();
+                }
+            }
+        } else { T(); program_tape.R(); }
     }
 
     while (program_tape.G()) { F(); } 
