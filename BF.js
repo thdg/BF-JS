@@ -12,21 +12,21 @@ function I() {
     case '<': memory_tape.L(); break;
     case '>': memory_tape.R(); break;
     case '.': output += String.fromCharCode(memory_tape.G()); break;
-    case ',': memory_tape.P(input_tape.G().charCodeAt()); input_tape.R(); break;
-    case ']': return 'Unexpected bracket "]"';
+    case ',': input_tape.G()!==undefined ? memory_tape.P(input_tape.G().charCodeAt()) : memory_tape.P(0); input_tape.R(); break;
+    case ']': output = 'Unexpected bracket "]"'; program_tape.J(program_tape.tape.length); return;
     case '[': var start = program_tape.head, skip=1;
-              while (memory_tape.G()!=0) { 
+              while (memory_tape.G()>0) { 
                 program_tape.R();
                 while ( program_tape.G()!=']' ) { I(); }
                 program_tape.J(start);
               }
               while (skip>0) { 
                 program_tape.R(); 
-                if (program_tape.G()=='[') { skip++; }
-                if (program_tape.G()==']') { skip--; }
+                if (program_tape.G()==='[') { skip++; }
+                if (program_tape.G()===']') { skip--; }
               }
   }
-  program_tape.R();
+  program_tape.R(); console.log(output);
 }
 
 function bf(program, size, input) { 
