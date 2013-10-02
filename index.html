@@ -96,6 +96,11 @@
       $('#clear').click(function() {
         $('#output').val('');
       })
+      var r = Math.random()*(99-34)+34;
+      var g = Math.random()*(99-34)+34;
+      var b = Math.random()*(99-34)+34;
+      var color = '#' + Math.floor(r) + Math.floor(g) + Math.floor(b);
+      $('body').css('background-color',color);
     });
   </script>
 </html>
